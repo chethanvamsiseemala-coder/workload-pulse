@@ -408,37 +408,37 @@ function App() {
      FILTERED TASKS
      ===================================================== */
 
-  const filteredTasks =
-    useMemo(
-      () =>
-        tasks.filter((task) => {
+ const filteredTasks =
+  useMemo(
+    () =>
+      activeTasks.filter((task) => {
 
-          const matchesSearch =
-            task.title
-              .toLowerCase()
-              .includes(
-                search
-                  .trim()
-                  .toLowerCase()
-              );
+        const matchesSearch =
+          task.title
+            .toLowerCase()
+            .includes(
+              search
+                .trim()
+                .toLowerCase()
+            );
 
-          const matchesCategory =
-            activeCategory ===
-              'All' ||
-            task.category ===
-              activeCategory;
+        const matchesCategory =
+          activeCategory ===
+            'All' ||
+          task.category ===
+            activeCategory;
 
-          return (
-            matchesSearch &&
-            matchesCategory
-          );
-        }),
-      [
-        tasks,
-        search,
-        activeCategory
-      ]
-    );
+        return (
+          matchesSearch &&
+          matchesCategory
+        );
+      }),
+    [
+      activeTasks,
+      search,
+      activeCategory
+    ]
+  );
 
   /* =====================================================
      ADD TASK
