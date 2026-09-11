@@ -2,7 +2,6 @@
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
-/** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "./index.html",
@@ -11,7 +10,9 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [
-    require('daisyui'),
-  ],
-};
+  plugins: [require("daisyui")],
+  // Add this daisyui object to enable the themes:
+  daisyui: {
+    themes: ["light", "dark", "cyberpunk", "synthwave"],
+  },
+}
