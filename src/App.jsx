@@ -1,4 +1,3 @@
-import React from 'react'
 import { useEffect, useMemo, useState } from 'react';
 import {
   Activity,
@@ -10,35 +9,27 @@ import {
   ChevronRight,
   Clock3,
   LoaderCircle,
+  Moon,
   Plus,
   RefreshCw,
   Search,
   Sparkles,
-  Target,
+  Sun,
   Trash2,
   WifiOff,
   X
 } from 'lucide-react';
-
 import { taskApi } from './api';
 import './index.css';
 
 const STORAGE_KEY = 'workload-pulse-cache-v1';
 const THEME_KEY = 'workload-pulse-theme';
+
 const CAPACITY = 30;
+const DISPLAY_MAX_HOURS = 100;
 
-const categories = [
-  'All',
-  'Academic',
-  'Career',
-  'Personal'
-];
-
-const statuses = [
-  'Not Started',
-  'In Progress',
-  'Completed'
-];
+const categories = ['All', 'Academic', 'Career', 'Personal'];
+const statuses = ['Not Started', 'In Progress', 'Completed'];
 
 const demoSeed = [
   {
@@ -85,33 +76,22 @@ const demoSeed = [
   }
 ];
 
+const demoTitles = new Set(
+  demoSeed.map((task) => task.title)
+);
+
 const normalizeTask = (task) => ({
   ...task,
-
-  title:
-    task.title ??
-    task.name ??
-    'Untitled task',
-
-  duedate:
-    task.duedate ??
-    task.dueDate ??
-    '',
-
-  hours:
-    Number(task.hours ?? 0),
-
-  category:
-    task.category ??
-    'Academic',
-
+  title: task.title ?? task.name ?? 'Untitled task',
+  duedate: task.duedate ?? task.dueDate ?? '',
+  hours: Number(task.hours ?? 0),
+  category: task.category ?? 'Academic',
   status:
     typeof task.status === 'boolean'
       ? task.status
         ? 'Completed'
         : 'Not Started'
-      : task.status ??
-        'Not Started'
+      : task.status ?? 'Not Started'
 });
 
 const toApiTask = (task) => ({
@@ -122,54 +102,66 @@ const toApiTask = (task) => ({
   status: task.status
 });
 
+/*
+  IMPORTANT:
+  MockAPI may contain duplicate demo records from earlier testing.
+
+  We keep only ONE copy of each demo task in the UI.
+  User-created tasks are kept normally.
+*/
+const cleanTasksForDisplay = (data) => {
+  const normalized = (
+    Array.isArray(data) ? data : []
+  ).map(normalizeTask);
+
+  const seenDemoTitles = new Set();
+
+  return normalized.filter((task) => {
+    if (!demoTitles.has(task.title)) {
+      return true;
+    }
+
+    if (seenDemoTitles.has(task.title)) {
+      return false;
+    }
+
+    seenDemoTitles.add(task.title);
+    return true;
+  });
+};
+
 const formatDate = (value) => {
   if (!value) return 'No date';
 
-  const date =
-    new Date(`${value}T00:00:00`);
+  const date = new Date(`${value}T00:00:00`);
 
   return Number.isNaN(date.getTime())
     ? value
-    : date.toLocaleDateString(
-        undefined,
-        {
-          month: 'short',
-          day: 'numeric'
-        }
-      );
+    : date.toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric'
+      });
 };
 
 const hoursUntil = (value) =>
   Math.round(
-    (
-      new Date(
-        `${value}T23:59:59`
-      ).getTime() -
-      Date.now()
-    ) / 36e5
+    (new Date(`${value}T23:59:59`).getTime() -
+      Date.now()) /
+      36e5
   );
 
 function App() {
-
-  /* =====================================================
-     TASK STATE
-     ===================================================== */
-
   const [tasks, setTasks] = useState(() => {
     try {
-      return JSON.parse(
-        localStorage.getItem(
-          STORAGE_KEY
-        ) || '[]'
-      ).map(normalizeTask);
+      const saved = JSON.parse(
+        localStorage.getItem(STORAGE_KEY) || '[]'
+      );
+
+      return cleanTasksForDisplay(saved);
     } catch {
       return [];
     }
   });
-
-  /* =====================================================
-     FORM STATE
-     ===================================================== */
 
   const [form, setForm] = useState({
     title: '',
@@ -179,70 +171,32 @@ function App() {
     status: 'Not Started'
   });
 
-  /* =====================================================
-     FILTER STATE
-     ===================================================== */
-
-  const [search, setSearch] =
-    useState('');
-
+  const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] =
     useState('All');
 
-  /* =====================================================
-     THEME STATE
-     ===================================================== */
+  const [theme, setTheme] = useState(
+    () =>
+      localStorage.getItem(THEME_KEY) ||
+      'light'
+  );
 
-  const [theme, setTheme] =
-    useState(
-      () =>
-        localStorage.getItem(
-          THEME_KEY
-        ) || 'light'
-    );
-
-  /* =====================================================
-     UI STATE
-     ===================================================== */
-
-  const [loading, setLoading] =
-    useState(true);
-
+  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] =
     useState(false);
-
   const [actionId, setActionId] =
     useState(null);
 
-  const [error, setError] =
-    useState('');
-
+  const [error, setError] = useState('');
   const [formError, setFormError] =
     useState('');
 
-  // DELETE MODAL STATE
-  const [deleteTarget, setDeleteTarget] =
-    useState(null);
-
-  const [deleting, setDeleting] =
-    useState(false);
-
-  /* =====================================================
-     AI STATE
-     ===================================================== */
-
   const [showAi, setShowAi] =
     useState(false);
-
   const [aiLoading, setAiLoading] =
     useState(false);
-
   const [aiAdvice, setAiAdvice] =
     useState('');
-
-  /* =====================================================
-     THEME
-     ===================================================== */
 
   useEffect(() => {
     document.documentElement.dataset.theme =
@@ -254,10 +208,6 @@ function App() {
     );
   }, [theme]);
 
-  /* =====================================================
-     SAVE TASKS
-     ===================================================== */
-
   useEffect(() => {
     localStorage.setItem(
       STORAGE_KEY,
@@ -265,37 +215,27 @@ function App() {
     );
   }, [tasks]);
 
-  /* =====================================================
-     LOAD TASKS
-     ===================================================== */
-
   const loadTasks = async () => {
     setLoading(true);
     setError('');
 
     try {
-      const data =
-        await taskApi.list();
+      const data = await taskApi.list();
 
-      const normalized =
-        (
-          Array.isArray(data)
-            ? data
-            : []
-        ).map(normalizeTask);
+      /*
+        Deduplicate demo records immediately
+        after loading from MockAPI.
+      */
+      const cleaned =
+        cleanTasksForDisplay(data);
 
-      setTasks(normalized);
-
+      setTasks(cleaned);
     } catch (err) {
-
       setError(
         `Could not reach MockAPI. ${err.message}. Showing saved data if available.`
       );
-
     } finally {
-
       setLoading(false);
-
     }
   };
 
@@ -303,180 +243,123 @@ function App() {
     loadTasks();
   }, []);
 
-  /* =====================================================
-     WORKLOAD CALCULATIONS
-     ===================================================== */
-
   const activeTasks = useMemo(
     () =>
       tasks.filter(
-        (t) =>
-          t.status !==
-          'Completed'
+        (t) => t.status !== 'Completed'
       ),
     [tasks]
   );
 
-  const completedTasks =
-    useMemo(
-      () =>
-        tasks.filter(
-          (t) =>
-            t.status ===
-            'Completed'
-        ),
-      [tasks]
-    );
-
-  const totalHours =
-    useMemo(
-      () =>
-        activeTasks.reduce(
-          (sum, t) =>
-            sum +
-            Number(
-              t.hours || 0
-            ),
-          0
-        ),
-      [activeTasks]
-    );
-
-  const workloadPercent =
-    Math.min(
-      Math.round(
-        (totalHours /
-          CAPACITY) *
-        100
+  const completedTasks = useMemo(
+    () =>
+      tasks.filter(
+        (t) => t.status === 'Completed'
       ),
-      100
-    );
+    [tasks]
+  );
 
-  const completionPercent =
-    tasks.length
-      ? Math.round(
-          (completedTasks.length /
-            tasks.length) *
+  /*
+    REAL workload.
+    We keep this value accurate for calculations.
+  */
+  const totalHours = useMemo(
+    () =>
+      activeTasks.reduce(
+        (sum, t) =>
+          sum + Number(t.hours || 0),
+        0
+      ),
+    [activeTasks]
+  );
+
+  /*
+    DISPLAY workload.
+    The dashboard never visually exceeds 100h.
+  */
+  const displayHours = Math.min(
+    totalHours,
+    DISPLAY_MAX_HOURS
+  );
+
+  const displayHoursLabel =
+    totalHours > DISPLAY_MAX_HOURS
+      ? `${DISPLAY_MAX_HOURS}+`
+      : displayHours;
+
+  const workloadPercent = Math.min(
+    Math.round(
+      (totalHours / CAPACITY) * 100
+    ),
+    100
+  );
+
+  const completionPercent = tasks.length
+    ? Math.round(
+        (completedTasks.length /
+          tasks.length) *
           100
-        )
-      : 0;
+      )
+    : 0;
 
   const overload =
     totalHours > CAPACITY;
 
-  /* =====================================================
-     URGENT TASKS
-     ===================================================== */
-
-  const urgentTasks =
-    useMemo(
-      () =>
-        tasks
-          .filter((task) => {
-
-            if (
-              task.status ===
-                'Completed' ||
-              !task.duedate
-            ) {
-              return false;
-            }
-
-            const h =
-              hoursUntil(
-                task.duedate
-              );
-
-            return (
-              h >= -24 &&
-              h <= 48
-            );
-          })
-          .sort(
-            (a, b) =>
-              new Date(
-                a.duedate
-              ) -
-              new Date(
-                b.duedate
-              )
-          ),
-      [tasks]
-    );
-
-  /* =====================================================
-     FILTERED TASKS
-     ===================================================== */
-
-const filteredTasks =
-  useMemo(
-    () => {
-      const categoryPriority = {
-        Academic: 1,
-        Career: 2,
-        Personal: 3
-      };
-
-      return activeTasks
+  const urgentTasks = useMemo(
+    () =>
+      tasks
         .filter((task) => {
-
-          const matchesSearch =
-            task.title
-              .toLowerCase()
-              .includes(
-                search
-                  .trim()
-                  .toLowerCase()
-              );
-
-          const matchesCategory =
-            activeCategory ===
-              'All' ||
-            task.category ===
-              activeCategory;
-
-          return (
-            matchesSearch &&
-            matchesCategory
-          );
-        })
-        .sort((a, b) => {
-
-          // 1. Sort by due date
-          const dateA = a.duedate
-            ? new Date(`${a.duedate}T00:00:00`).getTime()
-            : Infinity;
-
-          const dateB = b.duedate
-            ? new Date(`${b.duedate}T00:00:00`).getTime()
-            : Infinity;
-
-          if (dateA !== dateB) {
-            return dateA - dateB;
+          if (
+            task.status === 'Completed' ||
+            !task.duedate
+          ) {
+            return false;
           }
 
-          // 2. Same date → category priority
-          return (
-            (categoryPriority[a.category] ?? 99) -
-            (categoryPriority[b.category] ?? 99)
+          const h = hoursUntil(
+            task.duedate
           );
-        });
-    },
+
+          return h >= -24 && h <= 48;
+        })
+        .sort(
+          (a, b) =>
+            new Date(a.duedate) -
+            new Date(b.duedate)
+        ),
+    [tasks]
+  );
+
+  const filteredTasks = useMemo(
+    () =>
+      tasks.filter((task) => {
+        const matchesSearch =
+          task.title
+            .toLowerCase()
+            .includes(
+              search
+                .trim()
+                .toLowerCase()
+            );
+
+        const matchesCategory =
+          activeCategory === 'All' ||
+          task.category ===
+            activeCategory;
+
+        return (
+          matchesSearch &&
+          matchesCategory
+        );
+      }),
     [
-      activeTasks,
+      tasks,
       search,
       activeCategory
     ]
   );
 
-  /* =====================================================
-     ADD TASK
-     ===================================================== */
-
-  const submitTask = async (
-    event
-  ) => {
-
+  const submitTask = async (event) => {
     event.preventDefault();
 
     if (submitting) return;
@@ -492,22 +375,16 @@ const filteredTasks =
       !form.duedate ||
       !form.hours
     ) {
-
       setFormError(
         'Please complete task name, due date and effort hours.'
       );
-
       return;
     }
 
-    if (
-      title.length > 120
-    ) {
-
+    if (title.length > 120) {
       setFormError(
         'Task name must be 120 characters or fewer.'
       );
-
       return;
     }
 
@@ -518,11 +395,9 @@ const filteredTasks =
       numericHours <= 0 ||
       numericHours > 100
     ) {
-
       setFormError(
         'Effort must be between 1 and 100 hours.'
       );
-
       return;
     }
 
@@ -538,26 +413,21 @@ const filteredTasks =
     };
 
     try {
-
       const created =
         normalizeTask(
           await taskApi.create(
-            toApiTask(
-              optimistic
-            )
+            toApiTask(optimistic)
           )
         );
 
-      setTasks(
-        (current) => [
-          created,
-          ...current.filter(
-            (t) =>
-              t.id !==
-              optimistic.id
-          )
-        ]
-      );
+      setTasks((current) => [
+        created,
+        ...current.filter(
+          (t) =>
+            t.id !==
+            optimistic.id
+        )
+      ]);
 
       setForm({
         title: '',
@@ -566,29 +436,19 @@ const filteredTasks =
         hours: '',
         status: 'Not Started'
       });
-
     } catch (err) {
-
       setError(
         `Task was not saved to MockAPI. ${err.message}`
       );
-
     } finally {
-
       setSubmitting(false);
-
     }
   };
-
-  /* =====================================================
-     UPDATE STATUS
-     ===================================================== */
 
   const updateStatus = async (
     task,
     status
   ) => {
-
     setActionId(task.id);
     setError('');
 
@@ -597,176 +457,168 @@ const filteredTasks =
       status
     };
 
-    setTasks(
-      (current) =>
-        current.map((t) =>
-          t.id === task.id
-            ? updated
-            : t
-        )
+    setTasks((current) =>
+      current.map((t) =>
+        t.id === task.id
+          ? updated
+          : t
+      )
     );
 
     try {
-
       await taskApi.update(
         task.id,
         toApiTask(updated)
       );
-
     } catch (err) {
-
-      setTasks(
-        (current) =>
-          current.map((t) =>
-            t.id === task.id
-              ? task
-              : t
-          )
+      setTasks((current) =>
+        current.map((t) =>
+          t.id === task.id
+            ? task
+            : t
+        )
       );
 
       setError(
         `Status update failed. ${err.message}`
       );
-
     } finally {
-
       setActionId(null);
-
     }
   };
 
-  /* =====================================================
-     DELETE TASK
-     ===================================================== */
-
-  const deleteTask = async () => {
-
+  const deleteTask = async (task) => {
     if (
-      !deleteTarget ||
-      deleting
+      !window.confirm(
+        `Delete “${task.title}”?`
+      )
     ) {
       return;
     }
 
-    const task =
-      deleteTarget;
-
-    setDeleting(true);
     setActionId(task.id);
     setError('');
 
-    // Remove immediately from the UI
-    setTasks(
-      (current) =>
-        current.filter(
-          (t) =>
-            t.id !== task.id
-        )
+    setTasks((current) =>
+      current.filter(
+        (t) => t.id !== task.id
+      )
     );
 
     try {
-
-      // Delete from MockAPI
-      await taskApi.remove(
-        task.id
-      );
-
-      // Close modal after successful delete
-      setDeleteTarget(null);
-
+      await taskApi.remove(task.id);
     } catch (err) {
-
-      // Restore task if API deletion fails
-      setTasks(
-        (current) => [
-          task,
-          ...current
-        ]
-      );
+      setTasks((current) => [
+        task,
+        ...current
+      ]);
 
       setError(
         `Delete failed. ${err.message}`
       );
-
     } finally {
-
-      setDeleting(false);
       setActionId(null);
-
     }
   };
 
-  /* =====================================================
-     LOAD DEMO
-     ===================================================== */
+  /*
+    LOAD DEMO
 
-  const loadDemo = async () => {
+    We DO NOT delete old MockAPI records.
 
-    if (submitting) return;
+    Instead:
+    1. Fetch the latest records.
+    2. Keep only one copy of each demo task.
+    3. Create demo tasks only when they are missing.
+    4. Display one clean set.
+  */
+ const loadDemo = async () => {
+  if (submitting) return;
 
-    setSubmitting(true);
-    setError('');
+  setSubmitting(true);
+  setError('');
 
-    try {
+  try {
+    const data = await taskApi.list();
 
-      const created =
-        await Promise.all(
-          demoSeed.map(
-            (task) =>
-              taskApi.create(
-                task
-              )
-          )
+    const serverTasks = (
+      Array.isArray(data) ? data : []
+    ).map(normalizeTask);
+
+    const updatedDemoTasks = [];
+
+    for (const demoTask of demoSeed) {
+      const existing = serverTasks.find(
+        (task) => task.title === demoTask.title
+      );
+
+      if (existing) {
+        const updatedTask = {
+          ...existing,
+          ...demoTask,
+        };
+
+        const result = await taskApi.update(
+          existing.id,
+          toApiTask(updatedTask)
         );
 
-      setTasks(
-        (current) => [
-          ...created.map(
-            normalizeTask
-          ),
-          ...current
-        ]
+        updatedDemoTasks.push(
+          normalizeTask(result)
+        );
+      } else {
+        const result = await taskApi.create({
+          ...demoTask,
+          isDemo: true,
+        });
+
+        updatedDemoTasks.push(
+          normalizeTask(result)
+        );
+      }
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, 300)
       );
-
-    } catch (err) {
-
-      setError(
-        `Demo data could not be fully saved. ${err.message}`
-      );
-
-    } finally {
-
-      setSubmitting(false);
-
     }
-  };
 
-  /* =====================================================
-     GEMINI AI
-     ===================================================== */
+    // Keep only user-created tasks.
+    const userTasks = serverTasks.filter(
+      (task) => !demoTitles.has(task.title)
+    );
 
+    // Display exactly one clean copy of every demo task.
+    setTasks([
+      ...updatedDemoTasks,
+      ...userTasks,
+    ]);
+  } catch (err) {
+    setError(
+      `Demo data could not be loaded. ${err.message}`
+    );
+  } finally {
+    setSubmitting(false);
+  }
+};
   const getAiAdvice = async () => {
-
     setShowAi(true);
     setAiLoading(true);
     setAiAdvice('');
 
-    const prompt =
-      `You are a workload coach. Review these student tasks: ${activeTasks
-        .map(
-          (t) =>
-            `${t.title}, ${t.hours}h, due ${t.duedate}`
-        )
-        .join(
-          '; '
-        )}. Give exactly two short actionable sentences about what to prioritize or postpone. Weekly total is ${totalHours} hours and safe capacity is ${CAPACITY}.`;
+    const prompt = `You are a workload coach. Review these student tasks: ${activeTasks
+      .map(
+        (t) =>
+          `${t.title}, ${t.hours}h, due ${t.duedate}`
+      )
+      .join(
+        '; '
+      )}. Give exactly two short actionable sentences about what to prioritize or postpone. Weekly total is ${totalHours} hours and safe capacity is ${CAPACITY}.`;
 
     const key =
       import.meta.env
         .VITE_GEMINI_API_KEY;
 
     try {
-
       if (!key) {
         throw new Error(
           'No Gemini key configured'
@@ -778,12 +630,10 @@ const filteredTasks =
           `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,
           {
             method: 'POST',
-
             headers: {
               'Content-Type':
                 'application/json'
             },
-
             body: JSON.stringify({
               contents: [
                 {
@@ -808,15 +658,12 @@ const filteredTasks =
         await response.json();
 
       setAiAdvice(
-        data
-          ?.candidates?.[0]
+        data?.candidates?.[0]
           ?.content?.parts?.[0]
           ?.text ||
           'No advice returned.'
       );
-
     } catch {
-
       const urgent =
         urgentTasks[0];
 
@@ -830,66 +677,47 @@ const filteredTasks =
       setAiAdvice(
         `Start with ${
           urgent
-            ? `"${urgent.title}" because it is approaching its deadline`
+            ? `“${urgent.title}” because it is approaching its deadline`
             : 'the task with the nearest deadline'
         }. ${
           largest && overload
-            ? `Consider moving or splitting "${largest.title}" (${largest.hours}h) to bring this week closer to the ${CAPACITY}-hour capacity.`
+            ? `Consider moving or splitting “${largest.title}” (${largest.hours}h) to bring this week closer to the ${CAPACITY}-hour capacity.`
             : 'Keep completed work out of the active workload and finish one high-effort task at a time.'
         }`
       );
-
     } finally {
-
       setAiLoading(false);
-
     }
   };
 
-  /* =====================================================
-     UI
-     ===================================================== */
-
   return (
     <div className="app-shell">
-
-      {/* =================================================
-          NAVBAR
-          ================================================= */}
-
       <nav className="topbar">
-
         <div className="brand">
-
           <div className="brand-icon">
             <Activity size={21} />
           </div>
 
           <div>
-
             <h1>
               Workload Pulse
             </h1>
-
             <p>
-              Student workload intelligence
+              Student workload
+              intelligence
             </p>
-
           </div>
-
         </div>
 
         <div className="nav-actions">
-
-          {/* REFRESH */}
-
           <button
             className="ghost-btn"
-            onClick={loadTasks}
+            onClick={
+              loadTasks
+            }
             disabled={loading}
             aria-label="Refresh tasks"
           >
-
             <RefreshCw
               size={17}
               className={
@@ -898,166 +726,100 @@ const filteredTasks =
                   : ''
               }
             />
-
           </button>
-
-          {/* DEMO */}
 
           <button
             className="demo-btn"
-            onClick={loadDemo}
-            disabled={submitting}
+            onClick={
+              loadDemo
+            }
+            disabled={
+              submitting
+            }
           >
-
             {submitting ? (
-
               <LoaderCircle
                 className="spin"
                 size={17}
               />
-
             ) : (
-
               <Sparkles
                 size={17}
               />
-
             )}
 
-            {' '}
-
             Load demo
-
           </button>
 
-          {/* THEME SELECTOR */}
-
-          <select
-            className="theme-selector"
-            value={theme}
-            onChange={(e) =>
+          <button
+            className="ghost-btn"
+            onClick={() =>
               setTheme(
-                e.target.value
+                theme ===
+                  'light'
+                  ? 'dark'
+                  : 'light'
               )
             }
-            aria-label="Choose theme"
+            aria-label="Toggle theme"
           >
-
-            <option value="light">
-              ☀️ Light
-            </option>
-
-            <option value="dark">
-              🌙 Dark
-            </option>
-
-            <option value="cyberpunk">
-              🟣 Cyberpunk
-            </option>
-
-            <option value="crimson">
-              🔥 Crimson
-            </option>
-
-            <option value="midnight">
-              🌌 Midnight
-            </option>
-
-            <option value="forest">
-              🌲 Forest
-            </option>
-
-            <option value="ocean">
-              🌊 Ocean
-            </option>
-
-            <option value="neon">
-              💚 Neon
-            </option>
-
-          </select>
-
+            {theme ===
+            'light' ? (
+              <Moon size={17} />
+            ) : (
+              <Sun size={17} />
+            )}
+          </button>
         </div>
-
       </nav>
 
-      {/* =================================================
-          MAIN
-          ================================================= */}
-
       <main className="page-wrap">
-
-        {/* HERO */}
-
         <section className="hero-panel">
-
           <div>
-
             <span className="eyebrow">
-
               <span className="live-dot" />
-
               LIVE WORKLOAD SIGNAL
-
             </span>
 
             <h2>
-
-              See pressure before it becomes{' '}
-
-              <span>
-                burnout.
-              </span>
-
+              See pressure before it
+              becomes{' '}
+              <span>burnout.</span>
             </h2>
 
             <p>
-              Track deadlines, estimate effort,
-              and make faster decisions when your
-              semester starts getting overloaded.
+              Track deadlines,
+              estimate effort,
+              and make faster
+              decisions when your
+              semester starts
+              getting overloaded.
             </p>
-
           </div>
 
           <div className="hero-metric">
-
             <span>
               This week
             </span>
 
             <strong>
-
-              {totalHours}
-
-              <small>
-                h
-              </small>
-
+              {displayHoursLabel}
+              <small>h</small>
             </strong>
 
             <em>
-
               {overload
                 ? 'Over capacity'
-                : `${Math.max(
-                    CAPACITY -
-                      totalHours,
-                    0
-                  )}h capacity left`}
-
+                : `${CAPACITY - totalHours}h capacity left`}
             </em>
-
           </div>
-
         </section>
 
-        {/* ERROR */}
-
         {error && (
-
           <div className="error-banner">
-
-            <WifiOff size={18} />
+            <WifiOff
+              size={18}
+            />
 
             <span>
               {error}
@@ -1068,27 +830,15 @@ const filteredTasks =
                 setError('')
               }
             >
-
               <X size={17} />
-
             </button>
-
           </div>
-
         )}
 
-        {/* OVERVIEW */}
-
         <section className="overview-grid">
-
-          {/* WORKLOAD GAUGE */}
-
           <article className="panel gauge-panel">
-
             <div className="panel-heading">
-
               <div>
-
                 <span className="section-kicker">
                   WEEKLY CAPACITY
                 </span>
@@ -1096,27 +846,25 @@ const filteredTasks =
                 <h3>
                   Workload gauge
                 </h3>
-
               </div>
 
               <span
                 className={`risk-pill ${
                   overload
                     ? 'risk-high'
-                    : totalHours > 22
+                    : totalHours >
+                      22
                     ? 'risk-medium'
                     : 'risk-low'
                 }`}
               >
-
                 {overload
                   ? 'High risk'
-                  : totalHours > 22
+                  : totalHours >
+                    22
                   ? 'Watch closely'
                   : 'Balanced'}
-
               </span>
-
             </div>
 
             <div
@@ -1125,55 +873,42 @@ const filteredTasks =
                 '--value': `${workloadPercent * 3.6}deg`
               }}
             >
-
               <div className="gauge-inner">
-
                 <strong>
-                  {totalHours}
+                  {displayHoursLabel}
                 </strong>
 
                 <span>
-                  / {CAPACITY} hours
+                  / {CAPACITY}{' '}
+                  hours
                 </span>
-
               </div>
-
             </div>
 
             <div className="gauge-caption">
-
               <span>
                 Active tasks only
               </span>
 
               <span>
-                {workloadPercent}% capacity used
+                {workloadPercent}%
+                capacity used
               </span>
-
             </div>
-
           </article>
 
-          {/* SYSTEM STATUS */}
-
           <article className="panel status-panel">
-
             <div className="panel-heading">
-
               <div>
-
                 <span className="section-kicker">
                   SYSTEM STATUS
                 </span>
 
                 <h3>
-
                   {overload
                     ? 'Workload needs attention'
                     : 'Workload is under control'}
-
                 </h3>
-
               </div>
 
               <Activity
@@ -1184,7 +919,6 @@ const filteredTasks =
                 }
                 size={25}
               />
-
             </div>
 
             <div
@@ -1194,92 +928,76 @@ const filteredTasks =
                   : 'success'
               }`}
             >
-
               <AlertTriangle
                 size={21}
               />
 
               <div>
-
                 <strong>
-
                   {overload
-                    ? `Over capacity by ${
-                        totalHours -
-                        CAPACITY
-                      } hours`
+                    ? totalHours -
+                        CAPACITY >
+                      DISPLAY_MAX_HOURS
+                      ? `Over capacity by ${DISPLAY_MAX_HOURS}+ hours`
+                      : `Over capacity by ${
+                          totalHours -
+                          CAPACITY
+                        } hours`
                     : 'Workload balanced'}
-
                 </strong>
 
                 <p>
-
                   {overload
                     ? 'Reduce, split, or reschedule lower-priority work.'
                     : 'You are currently inside your recommended weekly limit.'}
-
                 </p>
-
               </div>
-
             </div>
 
             <div className="stat-row">
-
               <div>
-
                 <span>
                   Active
                 </span>
 
                 <strong>
-                  {activeTasks.length}
+                  {
+                    activeTasks.length
+                  }
                 </strong>
-
               </div>
 
               <div>
-
                 <span>
                   Completed
                 </span>
 
                 <strong>
-                  {completedTasks.length}
+                  {
+                    completedTasks.length
+                  }
                 </strong>
-
               </div>
 
               <div>
-
                 <span>
                   Completion
                 </span>
 
                 <strong>
-                  {completionPercent}%
+                  {
+                    completionPercent
+                  }%
                 </strong>
-
               </div>
-
             </div>
-
           </article>
-
         </section>
 
-        {/* FORM + URGENT */}
-
         <section className="content-grid">
-
-          {/* ADD TASK */}
-
           <article className="panel form-panel">
-
             <div className="panel-heading">
-
               <div>
-
                 <span className="section-kicker">
                   INPUT ENGINE
                 </span>
@@ -1289,44 +1007,44 @@ const filteredTasks =
                 </h3>
 
                 <p>
-                  Capture effort before the week captures you.
+                  Capture effort
+                  before the week
+                  captures you.
                 </p>
-
               </div>
 
               <div className="icon-badge">
                 <Plus size={20} />
               </div>
-
             </div>
 
             <form
-              onSubmit={submitTask}
+              onSubmit={
+                submitTask
+              }
             >
-
               <label>
-
                 Task name
 
                 <input
-                  value={form.title}
+                  value={
+                    form.title
+                  }
                   maxLength="120"
                   onChange={(e) =>
                     setForm({
                       ...form,
                       title:
-                        e.target.value
+                        e.target
+                          .value
                     })
                   }
                   placeholder="e.g. Capstone presentation"
                 />
-
               </label>
 
               <div className="two-col">
-
                 <label>
-
                   Category
 
                   <select
@@ -1337,11 +1055,11 @@ const filteredTasks =
                       setForm({
                         ...form,
                         category:
-                          e.target.value
+                          e.target
+                            .value
                       })
                     }
                   >
-
                     <option>
                       Academic
                     </option>
@@ -1353,13 +1071,10 @@ const filteredTasks =
                     <option>
                       Personal
                     </option>
-
                   </select>
-
                 </label>
 
                 <label>
-
                   Effort (hours)
 
                   <input
@@ -1373,20 +1088,17 @@ const filteredTasks =
                       setForm({
                         ...form,
                         hours:
-                          e.target.value
+                          e.target
+                            .value
                       })
                     }
                     placeholder="6"
                   />
-
                 </label>
-
               </div>
 
               <div className="two-col">
-
                 <label>
-
                   Due date
 
                   <input
@@ -1398,15 +1110,14 @@ const filteredTasks =
                       setForm({
                         ...form,
                         duedate:
-                          e.target.value
+                          e.target
+                            .value
                       })
                     }
                   />
-
                 </label>
 
                 <label>
-
                   Initial status
 
                   <select
@@ -1417,11 +1128,11 @@ const filteredTasks =
                       setForm({
                         ...form,
                         status:
-                          e.target.value
+                          e.target
+                            .value
                       })
                     }
                   >
-
                     {statuses.map(
                       (s) => (
                         <option
@@ -1431,68 +1142,45 @@ const filteredTasks =
                         </option>
                       )
                     )}
-
                   </select>
-
                 </label>
-
               </div>
 
               {formError && (
-
                 <p className="form-error">
                   {formError}
                 </p>
-
               )}
 
               <button
                 className="primary-btn"
                 type="submit"
-                disabled={submitting}
+                disabled={
+                  submitting
+                }
               >
-
                 {submitting ? (
-
                   <>
                     <LoaderCircle
                       size={18}
                       className="spin"
                     />
-
-                    {' '}
-
-                    Saving task…
-
+                    Saving
+                    task…
                   </>
-
                 ) : (
-
                   <>
                     <Plus size={18} />
-
-                    {' '}
-
                     Add task
-
                   </>
-
                 )}
-
               </button>
-
             </form>
-
           </article>
 
-          {/* URGENT TASKS */}
-
           <article className="panel urgent-panel">
-
             <div className="panel-heading">
-
               <div>
-
                 <span className="section-kicker">
                   48-HOUR SPOTLIGHT
                 </span>
@@ -1502,36 +1190,29 @@ const filteredTasks =
                 </h3>
 
                 <p>
-                  Active tasks approaching within two days.
+                  Active tasks
+                  approaching within
+                  two days.
                 </p>
-
               </div>
 
               <Clock3 size={23} />
-
             </div>
 
             {loading ? (
-
               <div className="skeleton-list">
-
                 {[1, 2, 3].map(
                   (i) => (
-
                     <div
                       className="skeleton"
                       key={i}
                     />
-
                   )
                 )}
-
               </div>
-
-            ) : urgentTasks.length === 0 ? (
-
+            ) : urgentTasks.length ===
+              0 ? (
               <div className="empty-spotlight">
-
                 <CheckCircle2
                   size={34}
                 />
@@ -1541,49 +1222,45 @@ const filteredTasks =
                 </strong>
 
                 <span>
-                  No active deadlines in the next 48 hours.
+                  No active
+                  deadlines in the
+                  next 48 hours.
                 </span>
-
               </div>
-
             ) : (
-
               <div className="urgent-list">
-
                 {urgentTasks
                   .slice(0, 4)
                   .map(
                     (task) => (
-
                       <div
                         className="urgent-item"
-                        key={task.id}
+                        key={
+                          task.id
+                        }
                       >
-
                         <div>
-
                           <strong>
-                            {task.title}
+                            {
+                              task.title
+                            }
                           </strong>
 
                           <span>
-
                             <CalendarDays
-                              size={14}
-                            />
-
-                            {' '}
-
+                              size={
+                                14
+                              }
+                            />{' '}
                             {formatDate(
                               task.duedate
-                            )}
-
-                            {' · '}
-
-                            {task.hours}h
-
+                            )}{' '}
+                            ·{' '}
+                            {
+                              task.hours
+                            }
+                            h
                           </span>
-
                         </div>
 
                         <button
@@ -1598,64 +1275,51 @@ const filteredTasks =
                             )
                           }
                         >
-
                           {actionId ===
                           task.id ? (
-
                             <LoaderCircle
-                              size={16}
+                              size={
+                                16
+                              }
                               className="spin"
                             />
-
                           ) : (
-
                             'Done'
-
                           )}
-
                         </button>
-
                       </div>
-
                     )
                   )}
-
               </div>
-
             )}
-
           </article>
-
         </section>
 
-        {/* TASK LEDGER */}
-
         <section className="panel ledger-panel">
-
           <div className="ledger-top">
-
             <div>
-
               <span className="section-kicker">
                 LIVE TASK LEDGER
               </span>
 
               <h3>
-                Everything in one place
+                Everything in one
+                place
               </h3>
 
               <p>
-                Real async CRUD backed by MockAPI.
+                Real async CRUD
+                backed by MockAPI.
               </p>
-
             </div>
 
             <div className="search-wrap">
-
               <Search size={18} />
 
               <input
-                value={search}
+                value={
+                  search
+                }
                 onChange={(e) =>
                   setSearch(
                     e.target.value
@@ -1663,18 +1327,16 @@ const filteredTasks =
                 }
                 placeholder="Search tasks"
               />
-
             </div>
-
           </div>
 
           <div className="filter-row">
-
             {categories.map(
               (category) => (
-
                 <button
-                  key={category}
+                  key={
+                    category
+                  }
                   className={
                     activeCategory ===
                     category
@@ -1687,37 +1349,26 @@ const filteredTasks =
                     )
                   }
                 >
-
                   {category}
-
                 </button>
-
               )
             )}
-
           </div>
 
           {loading ? (
-
             <div className="table-skeleton">
-
               {[1, 2, 3, 4].map(
                 (i) => (
-
                   <div
                     className="skeleton row"
                     key={i}
                   />
-
                 )
               )}
-
             </div>
-
-          ) : filteredTasks.length === 0 ? (
-
+          ) : filteredTasks.length ===
+            0 ? (
             <div className="empty-ledger">
-
               <Search size={32} />
 
               <h4>
@@ -1725,44 +1376,31 @@ const filteredTasks =
               </h4>
 
               <p>
-                Try another search or add a new deadline.
+                Try another search
+                or add a new
+                deadline.
               </p>
 
               <button
                 className="text-btn"
                 onClick={() => {
-
                   setSearch('');
-
                   setActiveCategory(
                     'All'
                   );
-
                 }}
               >
-
-                Clear filters
-
-                {' '}
-
+                Clear filters{' '}
                 <ChevronRight
                   size={16}
                 />
-
               </button>
-
             </div>
-
           ) : (
-
             <div className="table-wrap">
-
               <table>
-
                 <thead>
-
                   <tr>
-
                     <th>
                       Task
                     </th>
@@ -1783,57 +1421,50 @@ const filteredTasks =
                       Status
                     </th>
 
-                    <th />
-
+                    <th></th>
                   </tr>
-
                 </thead>
 
                 <tbody>
-
                   {filteredTasks.map(
                     (task) => (
-
                       <tr
-                        key={task.id}
+                        key={
+                          task.id
+                        }
                       >
-
                         <td>
-
                           <strong className="truncate">
-                            {task.title}
+                            {
+                              task.title
+                            }
                           </strong>
-
                         </td>
 
                         <td>
-
                           <span
                             className={`category-tag ${task.category.toLowerCase()}`}
                           >
-
-                            {task.category}
-
+                            {
+                              task.category
+                            }
                           </span>
-
                         </td>
 
                         <td>
-
                           {formatDate(
                             task.duedate
                           )}
-
                         </td>
 
                         <td>
-
-                          {task.hours}h
-
+                          {
+                            task.hours
+                          }
+                          h
                         </td>
 
                         <td>
-
                           <select
                             value={
                               task.status
@@ -1842,32 +1473,33 @@ const filteredTasks =
                               actionId ===
                               task.id
                             }
-                            onChange={(e) =>
+                            onChange={(
+                              e
+                            ) =>
                               updateStatus(
                                 task,
-                                e.target.value
+                                e.target
+                                  .value
                               )
                             }
                           >
-
                             {statuses.map(
                               (s) => (
-
                                 <option
-                                  key={s}
+                                  key={
+                                    s
+                                  }
                                 >
-                                  {s}
+                                  {
+                                    s
+                                  }
                                 </option>
-
                               )
                             )}
-
                           </select>
-
                         </td>
 
                         <td>
-
                           <button
                             className="delete-btn"
                             disabled={
@@ -1875,123 +1507,100 @@ const filteredTasks =
                               task.id
                             }
                             onClick={() =>
-                              setDeleteTarget(
+                              deleteTask(
                                 task
                               )
                             }
                             aria-label={`Delete ${task.title}`}
                           >
-
                             {actionId ===
                             task.id ? (
-
                               <LoaderCircle
-                                size={17}
+                                size={
+                                  17
+                                }
                                 className="spin"
                               />
-
                             ) : (
-
                               <Trash2
-                                size={17}
+                                size={
+                                  17
+                                }
                               />
-
                             )}
-
                           </button>
-
                         </td>
-
                       </tr>
-
                     )
                   )}
-
                 </tbody>
-
               </table>
-
             </div>
-
           )}
-
         </section>
 
-        {/* AI FEATURE */}
-
         <section className="ai-card">
-
           <div className="ai-copy">
-
             <div className="ai-icon">
-
               <BrainCircuit
                 size={24}
               />
-
             </div>
 
             <div>
-
               <span className="section-kicker">
-                STRETCH FEATURE · GEMINI AI
+                STRETCH FEATURE ·
+                GEMINI AI
               </span>
 
               <h3>
-                Re-balance your week
+                Re-balance your
+                week
               </h3>
 
               <p>
-                Get a concise prioritisation suggestion from Gemini when configured, with a resilient local fallback for the demo.
+                Get a concise
+                prioritisation
+                suggestion from
+                Gemini when
+                configured, with a
+                resilient local
+                fallback for the
+                demo.
               </p>
-
             </div>
-
           </div>
 
           <button
             className="ai-btn"
-            onClick={getAiAdvice}
-            disabled={aiLoading}
+            onClick={
+              getAiAdvice
+            }
+            disabled={
+              aiLoading
+            }
           >
-
             {aiLoading ? (
-
               <LoaderCircle
                 className="spin"
                 size={18}
               />
-
             ) : (
-
               <Sparkles
                 size={18}
               />
-
             )}
 
-            {' '}
-
             Get AI advice
-
-            {' '}
 
             <ArrowUpRight
               size={17}
             />
-
           </button>
-
         </section>
-
       </main>
 
-      {/* =================================================
-          AI MODAL
-          ================================================= */}
-
       {showAi && (
-
         <div
           className="modal-backdrop"
           role="presentation"
@@ -1999,7 +1608,6 @@ const filteredTasks =
             setShowAi(false)
           }
         >
-
           <section
             className="ai-modal"
             role="dialog"
@@ -2008,24 +1616,19 @@ const filteredTasks =
               e.stopPropagation()
             }
           >
-
             <button
               className="modal-close"
               onClick={() =>
                 setShowAi(false)
               }
             >
-
               <X size={19} />
-
             </button>
 
             <div className="ai-icon">
-
               <BrainCircuit
                 size={26}
               />
-
             </div>
 
             <span className="section-kicker">
@@ -2033,133 +1636,24 @@ const filteredTasks =
             </span>
 
             <h3>
-              Your re-balance plan
+              Your re-balance
+              plan
             </h3>
 
             {aiLoading ? (
-
               <div className="modal-loading">
-
-                <LoaderCircle
-                  className="spin"
-                />
-
-                {' '}
-
-                Thinking through your workload…
-
+                <LoaderCircle className="spin" />
+                Thinking through
+                your workload…
               </div>
-
             ) : (
-
               <p>
                 {aiAdvice}
               </p>
-
             )}
-
           </section>
-
         </div>
-
       )}
-
-      {/* =================================================
-          DELETE CONFIRMATION MODAL
-          ================================================= */}
-
-      {deleteTarget && (
-
-        <div
-          className="modal-backdrop"
-          role="presentation"
-          onMouseDown={() => {
-            if (!deleting) {
-              setDeleteTarget(null);
-            }
-          }}
-        >
-
-          <section
-            className="delete-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="delete-modal-title"
-            onMouseDown={(e) =>
-              e.stopPropagation()
-            }
-          >
-
-            <div className="delete-modal-icon">
-              <Trash2 size={24} />
-            </div>
-
-            <span className="section-kicker">
-              DELETE TASK
-            </span>
-
-            <h3 id="delete-modal-title">
-              Delete this task?
-            </h3>
-
-            <p>
-              Are you sure you want to delete{' '}
-              <strong>
-                “{deleteTarget.title}”
-              </strong>
-              ? This action cannot be undone.
-            </p>
-
-            <div className="delete-modal-actions">
-
-              <button
-                type="button"
-                className="modal-cancel-btn"
-                disabled={deleting}
-                onClick={() =>
-                  setDeleteTarget(null)
-                }
-              >
-                Cancel
-              </button>
-
-              <button
-                type="button"
-                className="modal-delete-btn"
-                disabled={deleting}
-                onClick={deleteTask}
-              >
-
-                {deleting ? (
-
-                  <>
-                    <LoaderCircle
-                      size={17}
-                      className="spin"
-                    />
-
-                    Deleting…
-                  </>
-
-                ) : (
-
-                  <>
-                    <Trash2 size={17} />
-                    Delete task
-                  </>
-
-                )}
-
-              </button>
-
-            </div>
-
-          </section>
-
-        </div>
-
-      )}
-
     </div>
   );
 }
