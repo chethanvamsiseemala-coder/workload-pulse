@@ -2243,3 +2243,106 @@ td select,
     box-shadow 0.25s ease;
 }
 
+/* =====================================================
+   DELETE CONFIRMATION MODAL
+   ===================================================== */
+
+.delete-modal {
+  width: min(440px, calc(100vw - 32px));
+  padding: 30px;
+  border-radius: 22px;
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.25);
+  position: relative;
+  animation: deleteModalIn 0.18s ease-out;
+}
+
+.delete-modal-icon {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  margin-bottom: 18px;
+  background: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+}
+
+.delete-modal h3 {
+  margin: 8px 0 10px;
+  font-size: 25px;
+  letter-spacing: -0.5px;
+}
+
+.delete-modal p {
+  margin: 0;
+  line-height: 1.6;
+  opacity: 0.72;
+}
+
+.delete-modal p strong {
+  opacity: 1;
+}
+
+.delete-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.modal-cancel-btn,
+.modal-delete-btn {
+  min-height: 42px;
+  padding: 0 17px;
+  border-radius: 11px;
+  border: 1px solid var(--border);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: 0.18s ease;
+}
+
+.modal-cancel-btn {
+  background: transparent;
+  color: inherit;
+}
+
+.modal-cancel-btn:hover:not(:disabled) {
+  background: var(--soft-bg);
+}
+
+.modal-delete-btn {
+  border-color: #dc2626;
+  background: #dc2626;
+  color: white;
+}
+
+.modal-delete-btn:hover:not(:disabled) {
+  background: #b91c1c;
+  border-color: #b91c1c;
+}
+
+.modal-cancel-btn:disabled,
+.modal-delete-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@keyframes deleteModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+

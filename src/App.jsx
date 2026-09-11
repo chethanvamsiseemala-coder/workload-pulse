@@ -220,6 +220,13 @@ function App() {
   const [formError, setFormError] =
     useState('');
 
+  // DELETE MODAL STATE
+  const [deleteTarget, setDeleteTarget] =
+    useState(null);
+
+  const [deleting, setDeleting] =
+    useState(false);
+
   /* =====================================================
      AI STATE
      ===================================================== */
@@ -340,7 +347,7 @@ function App() {
       Math.round(
         (totalHours /
           CAPACITY) *
-          100
+        100
       ),
       100
     );
@@ -350,7 +357,7 @@ function App() {
       ? Math.round(
           (completedTasks.length /
             tasks.length) *
-            100
+          100
         )
       : 0;
 
@@ -603,21 +610,23 @@ function App() {
      DELETE TASK
      ===================================================== */
 
-  const deleteTask = async (
-    task
-  ) => {
+  const deleteTask = async () => {
 
     if (
-      !window.confirm(
-        `Delete “${task.title}”?`
-      )
+      !deleteTarget ||
+      deleting
     ) {
       return;
     }
 
+    const task =
+      deleteTarget;
+
+    setDeleting(true);
     setActionId(task.id);
     setError('');
 
+    // Remove immediately from the UI
     setTasks(
       (current) =>
         current.filter(
@@ -628,12 +637,17 @@ function App() {
 
     try {
 
+      // Delete from MockAPI
       await taskApi.remove(
         task.id
       );
 
+      // Close modal after successful delete
+      setDeleteTarget(null);
+
     } catch (err) {
 
+      // Restore task if API deletion fails
       setTasks(
         (current) => [
           task,
@@ -647,6 +661,7 @@ function App() {
 
     } finally {
 
+      setDeleting(false);
       setActionId(null);
 
     }
@@ -886,9 +901,7 @@ function App() {
 
           </button>
 
-          {/* =================================================
-              8 THEME SELECTOR
-              ================================================= */}
+          {/* THEME SELECTOR */}
 
           <select
             className="theme-selector"
@@ -945,9 +958,7 @@ function App() {
 
       <main className="page-wrap">
 
-        {/* =================================================
-            HERO
-            ================================================= */}
+        {/* HERO */}
 
         <section className="hero-panel">
 
@@ -1011,9 +1022,7 @@ function App() {
 
         </section>
 
-        {/* =================================================
-            ERROR
-            ================================================= */}
+        {/* ERROR */}
 
         {error && (
 
@@ -1039,9 +1048,7 @@ function App() {
 
         )}
 
-        {/* =================================================
-            OVERVIEW
-            ================================================= */}
+        {/* OVERVIEW */}
 
         <section className="overview-grid">
 
@@ -1232,9 +1239,7 @@ function App() {
 
         </section>
 
-        {/* =================================================
-            FORM + URGENT
-            ================================================= */}
+        {/* FORM + URGENT */}
 
         <section className="content-grid">
 
@@ -1594,9 +1599,7 @@ function App() {
 
         </section>
 
-        {/* =================================================
-            TASK LEDGER
-            ================================================= */}
+        {/* TASK LEDGER */}
 
         <section className="panel ledger-panel">
 
@@ -1843,7 +1846,7 @@ function App() {
                               task.id
                             }
                             onClick={() =>
-                              deleteTask(
+                              setDeleteTarget(
                                 task
                               )
                             }
@@ -1885,9 +1888,7 @@ function App() {
 
         </section>
 
-        {/* =================================================
-            AI FEATURE
-            ================================================= */}
+        {/* AI FEATURE */}
 
         <section className="ai-card">
 
@@ -2027,6 +2028,102 @@ function App() {
               </p>
 
             )}
+
+          </section>
+
+        </div>
+
+      )}
+
+      {/* =================================================
+          DELETE CONFIRMATION MODAL
+          ================================================= */}
+
+      {deleteTarget && (
+
+        <div
+          className="modal-backdrop"
+          role="presentation"
+          onMouseDown={() => {
+            if (!deleting) {
+              setDeleteTarget(null);
+            }
+          }}
+        >
+
+          <section
+            className="delete-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-modal-title"
+            onMouseDown={(e) =>
+              e.stopPropagation()
+            }
+          >
+
+            <div className="delete-modal-icon">
+              <Trash2 size={24} />
+            </div>
+
+            <span className="section-kicker">
+              DELETE TASK
+            </span>
+
+            <h3 id="delete-modal-title">
+              Delete this task?
+            </h3>
+
+            <p>
+              Are you sure you want to delete{' '}
+              <strong>
+                “{deleteTarget.title}”
+              </strong>
+              ? This action cannot be undone.
+            </p>
+
+            <div className="delete-modal-actions">
+
+              <button
+                type="button"
+                className="modal-cancel-btn"
+                disabled={deleting}
+                onClick={() =>
+                  setDeleteTarget(null)
+                }
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                className="modal-delete-btn"
+                disabled={deleting}
+                onClick={deleteTask}
+              >
+
+                {deleting ? (
+
+                  <>
+                    <LoaderCircle
+                      size={17}
+                      className="spin"
+                    />
+
+                    Deleting…
+                  </>
+
+                ) : (
+
+                  <>
+                    <Trash2 size={17} />
+                    Delete task
+                  </>
+
+                )}
+
+              </button>
+
+            </div>
 
           </section>
 
