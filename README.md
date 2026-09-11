@@ -1,10 +1,18 @@
-# ⚡ Workload Pulse
+# ⚡ WORKLOAD PULSE
 
-> **See the pressure before it becomes a problem.**
+### **See the pressure before it becomes a problem.**
 
-**Workload Pulse** is a workload-awareness platform built for **final-year engineering students** juggling academic submissions, placements, interviews, projects, certifications, and personal commitments.
+> 🎓 **A workload-awareness platform for final-year engineering students**
+>
+> **Track → Measure → Detect → Prioritize → Act**
 
-Instead of discovering an overloaded week only when deadlines start colliding, Workload Pulse turns upcoming commitments into a **clear, actionable workload picture** — helping students identify pressure points, prioritize urgent work, and stay ahead of their deadlines.
+---
+
+<p align="center">
+
+**📚 Academic**  •  **💼 Career**  •  **👤 Personal**
+
+</p>
 
 ---
 
@@ -12,316 +20,327 @@ Instead of discovering an overloaded week only when deadlines start colliding, W
 
 Final-year engineering students rarely struggle because they have *nothing to do*.
 
-They struggle because **everything becomes due at the same time**.
+They struggle because **everything becomes due at the same time.**
 
 Assignments overlap with project milestones.
 Project work overlaps with placement preparation.
 Interviews collide with exams.
 Certifications compete with everything else.
 
-The real challenge is not simply tracking tasks — it is understanding:
+The real challenge isn't simply:
 
-> **"Do I actually have enough time this week to handle everything I've planned?"**
+> ❌ **"What do I need to do?"**
+
+It's:
+
+> ✅ **"Do I actually have enough time this week to handle everything I've planned?"**
 
 Traditional to-do lists tell students **what** they need to do.
 
-**Workload Pulse tells them whether their workload is becoming unmanageable.**
+### ⚡ Workload Pulse tells them whether their workload is becoming unmanageable.
 
 ---
 
 ## 👨‍🎓 Target User
 
-### Final-year engineering students
+### Final-Year Engineering Students
 
-Students managing multiple simultaneous responsibilities such as:
+Designed for students managing multiple responsibilities simultaneously:
 
-* 📚 Academic assignments
-* 🧪 Projects and labs
-* 💼 Placement preparation
-* 🧑‍💻 Coding practice
-* 🎯 Interviews
-* 📜 Certifications
-* 🏆 Hackathons
-* 👤 Personal commitments
+| 📚 Academic | 💼 Career           | 👤 Personal      |
+| ----------- | ------------------- | ---------------- |
+| Assignments | Placement Prep      | Personal Tasks   |
+| Projects    | Interviews          | Commitments      |
+| Labs        | Coding Practice     | Other Activities |
+| Exams       | Certifications      | —                |
+| Hackathons  | Career Applications | —                |
 
-Workload Pulse is designed around the reality of students who have **limited weekly capacity but constantly changing priorities**.
-
----
-
-# 🚀 Core Features
-
-## 1. 📝 Smart Task Creation
-
-Add tasks quickly through a **validated task form** containing:
-
-* Task title
-* Category
-
-  * Academic
-  * Career
-  * Personal
-* Due date
-* Estimated effort in hours
-* Task status
-
-  * Not Started
-  * In Progress
-  * Completed
-
-The form includes validation to prevent incomplete or invalid task entries.
-
-### Rapid-submit protection
-
-Accidental duplicate submissions are prevented when users rapidly click the submit action.
-
-This keeps the task ledger clean while maintaining a fast workflow.
+> **Limited time + multiple deadlines = workload pressure.**
+>
+> **Workload Pulse makes that pressure visible.**
 
 ---
 
-## 2. 📊 Real-Time Weekly Workload Gauge
+# 🚀 CORE FEATURES
 
-Workload Pulse continuously calculates the student's **planned effort for the current week**.
+## 01 · 📝 Smart Task Creation
 
-Instead of simply counting tasks, it measures their estimated workload in **hours**.
+Create tasks through a validated form with:
 
-For example:
+* **Task Title**
+* **Category**
+
+  * 📚 Academic
+  * 💼 Career
+  * 👤 Personal
+* **Due Date**
+* **Estimated Effort**
+* **Task Status**
+
+  * `Not Started`
+  * `In Progress`
+  * `Completed`
+
+### ⚡ Rapid-Submit Protection
+
+Rapid clicks won't accidentally create duplicate tasks.
+
+The form validates input before submission and protects the task ledger from accidental duplicate entries.
+
+---
+
+## 02 · 📊 Real-Time Weekly Workload Gauge
+
+Workload Pulse doesn't just count tasks.
+
+### It measures the **estimated hours of work**.
 
 ```text
-Weekly Capacity
-        ↓
-     40 hours
-
-Planned Work
-        ↓
-     32 hours
-
-Remaining Capacity
-        ↓
-      8 hours
+        WEEKLY CAPACITY
+              │
+              ▼
+           40 hrs
+              │
+              ▼
+        PLANNED WORK
+              │
+              ▼
+           32 hrs
+              │
+              ▼
+     REMAINING CAPACITY
+              │
+              ▼
+            8 hrs
 ```
 
-As tasks are created, edited, completed, or removed, the workload picture updates dynamically.
+Every create, update, completion, or deletion dynamically changes the workload picture.
 
-This transforms a simple task list into a **capacity-aware planning system**.
+> **A task list tells you how much you have.**
+>
+> **The workload gauge tells you whether you can handle it.**
 
 ---
 
-## 3. 🚨 Dynamic Workload Alert
+## 03 · 🚨 Dynamic Workload Alert
 
-The system continuously compares:
+Workload Pulse continuously compares:
 
-> **Planned weekly effort vs available weekly capacity**
+### **Planned Effort 🆚 Available Capacity**
 
-When the workload crosses the student's capacity threshold, Workload Pulse immediately highlights the situation.
+| Status            | Meaning                                 |
+| ----------------- | --------------------------------------- |
+| 🟢 **HEALTHY**    | Workload is comfortably within capacity |
+| 🟡 **WARNING**    | Available capacity is becoming limited  |
+| 🔴 **OVERLOADED** | Planned effort exceeds capacity         |
 
-### 🟢 Healthy
+The moment workload crosses the capacity threshold, the interface makes the situation immediately visible.
 
-Workload is comfortably within capacity.
-
-### 🟡 Warning
-
-The student's available capacity is becoming tight.
-
-### 🔴 Overloaded
-
-Planned effort exceeds available weekly capacity.
-
-This gives students an immediate answer to one of the most important planning questions:
+### The question becomes:
 
 > **"Am I taking on more work than I can realistically complete?"**
 
 ---
 
-## 4. ⏰ 48-Hour Urgent Task Spotlight
+## 04 · ⏰ 48-Hour Urgent Task Spotlight
 
-Deadlines that are approaching within **48 hours** receive special attention.
+### **Deadlines don't wait. Neither should your priorities.**
 
-Instead of forcing students to scan the entire task list, Workload Pulse surfaces the tasks that require immediate action.
+Workload Pulse automatically highlights tasks approaching their deadline within **48 hours**.
 
-The spotlight provides:
+The urgent spotlight provides:
 
 * 🚨 Deadline visibility
 * ⏳ Remaining-time awareness
 * 📌 Task details
 * ⚡ Quick status updates
 
-A student can quickly move an urgent task from:
+Users can quickly move a task through:
 
-`Not Started → In Progress → Completed`
-
-without navigating through unnecessary screens.
+```text
+NOT STARTED
+      ↓
+IN PROGRESS
+      ↓
+COMPLETED
+```
 
 ### Why 48 hours?
 
-Because the final two days before a deadline are often where workload collisions become most dangerous.
+Because the final two days before a deadline are often where workload collisions become critical.
 
-Workload Pulse makes that pressure visible **before the deadline arrives**.
-
----
-
-## 5. 📋 Live Task Ledger
-
-The task ledger provides a centralized view of every workload item.
-
-Each task displays important information such as:
-
-| Information | Purpose                       |
-| ----------- | ----------------------------- |
-| Task        | What needs to be done         |
-| Category    | Academic, Career, or Personal |
-| Due Date    | When it is due                |
-| Effort      | Estimated hours required      |
-| Status      | Current progress              |
-
-The ledger supports full **CRUD operations**:
-
-* ➕ Create tasks
-* 👀 Read tasks
-* ✏️ Update tasks
-* 🗑️ Delete tasks
-
-Changes are synchronized through the application's asynchronous backend.
+> **Workload Pulse surfaces the pressure before the deadline becomes a crisis.**
 
 ---
 
-# 🧠 The Workload Pulse Experience
+## 05 · 📋 Live Task Ledger
 
-The application follows a simple decision-making flow:
+A centralized ledger keeps every workload item visible and manageable.
+
+| Information  | Purpose                      |
+| ------------ | ---------------------------- |
+| 📝 Task      | What needs to be done        |
+| 🏷️ Category | Academic / Career / Personal |
+| 📅 Due Date  | When it is due               |
+| ⏱️ Effort    | Estimated hours              |
+| 📌 Status    | Current progress             |
+
+### Full CRUD Support
 
 ```text
-        ADD TASK
-           ↓
-   Estimate the effort
-           ↓
-    Set the deadline
-           ↓
-   ┌─────────────────┐
-   │ Workload Pulse  │
-   │ calculates load │
-   └─────────────────┘
-           ↓
-   ┌─────────────────┐
-   │ Within Capacity │
-   │       or        │
-   │    Overloaded   │
-   └─────────────────┘
-           ↓
-    PRIORITIZE WORK
-           ↓
-    ACT BEFORE IT
-      BECOMES A
-       CRISIS
+➕ CREATE
+   ↓
+👀 READ
+   ↓
+✏️ UPDATE
+   ↓
+🗑️ DELETE
 ```
 
-The goal is not simply to help students **record tasks**.
-
-The goal is to help them **make better workload decisions**.
+All changes are synchronized through the application's asynchronous backend.
 
 ---
 
-# ✨ Stretch Features
+# 🧠 HOW WORKLOAD PULSE WORKS
 
-The core experience solves workload visibility.
+```text
+             ┌───────────────┐
+             │   ADD TASK    │
+             └───────┬───────┘
+                     ↓
+             ┌───────────────┐
+             │ ESTIMATE HOURS│
+             └───────┬───────┘
+                     ↓
+             ┌───────────────┐
+             │ SET DEADLINE  │
+             └───────┬───────┘
+                     ↓
+          ┌──────────────────────┐
+          │   WORKLOAD PULSE     │
+          │   CALCULATES LOAD    │
+          └──────────┬───────────┘
+                     ↓
+          ┌──────────────────────┐
+          │ WITHIN CAPACITY?     │
+          └──────────┬───────────┘
+                     ↓
+             ┌───────┴───────┐
+             ↓               ↓
+          🟢 YES             🔴 NO
+             ↓               ↓
+        STAY ON TRACK    PRIORITIZE
+                             ↓
+                       ACT EARLY
+```
 
-The stretch features take it one step further by helping students **act on that information**.
+### The philosophy is simple:
+
+> **Don't wait until you're overwhelmed to realize you're overloaded.**
+
+---
+
+# ✨ STRETCH FEATURES
+
+The core features make workload visible.
+
+The stretch features help students **do something about it**.
 
 ---
 
 ## 🤖 Gemini AI Workload Re-Balancing
 
-When workload becomes difficult to manage, the application can use **Google Gemini** to generate workload re-balancing suggestions.
+When the workload becomes difficult to manage, Workload Pulse can use **Google Gemini** to generate workload re-balancing suggestions.
 
-Instead of merely saying:
+Instead of simply saying:
 
-> 🔴 "You are overloaded."
+> 🔴 **"You are overloaded."**
 
-The AI can help answer:
+The AI helps answer:
 
-> **"What should I do about it?"**
+> 💡 **"What should I do about it?"**
 
-The system can analyze the current workload and suggest ways to rebalance priorities based on:
+Suggestions can consider:
 
-* Upcoming deadlines
-* Estimated effort
-* Task status
-* Workload concentration
-* Task categories
+* 📅 Upcoming deadlines
+* ⏱️ Estimated effort
+* 📌 Task status
+* 📊 Workload concentration
+* 🏷️ Task categories
 
-This turns Workload Pulse from a **workload monitoring tool** into an **AI-assisted planning companion**.
+### 🧠 From Monitoring → Decision Support
 
-### Resilient fallback
+This transforms Workload Pulse from a workload tracker into an:
 
-The Gemini integration is optional.
+> **AI-assisted workload planning companion.**
 
-If an API key is unavailable, the application uses a **local fallback mechanism**, ensuring that the core demonstration continues to work without depending entirely on an external AI service.
+### 🛡️ Resilient Fallback
+
+Gemini is optional.
+
+If an API key isn't available, a **local fallback mechanism** keeps the demo functional.
 
 ---
 
 ## ⚡ One-Click Demo Data Loader
 
-Demonstrating a workload-management application is much easier when the dashboard already contains realistic data.
+### **Ready-to-demo in one click.**
 
-The demo data loader can populate the application with representative tasks so users can immediately experience:
+The demo loader populates the application with realistic workload scenarios.
 
-* Normal workload
-* Approaching deadlines
-* Overloaded weeks
-* Different task categories
-* Different completion states
+It can demonstrate:
 
-This makes the project **hackathon-demo friendly** while still allowing users to create their own tasks.
+* 🟢 Normal workload
+* ⏰ Approaching deadlines
+* 🔴 Overloaded weeks
+* 📚 Multiple categories
+* 📌 Different task statuses
+
+Perfect for quickly demonstrating the application's complete workflow.
 
 ---
 
 ## 🔎 Dynamic Search & Category Filtering
 
-As the number of tasks grows, finding a specific task becomes easier with dynamic filtering.
+As the task list grows, users can quickly find what matters.
 
-Users can narrow their task ledger using:
+### 🔍 Search
 
-### Search
+Search through tasks quickly.
 
-Search tasks by title or relevant task information.
-
-### Category
+### 🏷️ Category Filtering
 
 Filter by:
 
-* 📚 Academic
-* 💼 Career
-* 👤 Personal
+`📚 Academic` · `💼 Career` · `👤 Personal`
 
-This allows students to answer questions such as:
+Examples:
 
-> "Show me everything related to placements."
+> **"Show me everything related to placements."**
 
-or:
-
-> "What academic work do I still have?"
+> **"What academic work do I still have?"**
 
 ---
 
 ## 🎨 Green / White Theme Switcher
 
-Workload Pulse includes a lightweight theme switcher designed around a clean **green-and-white visual identity**.
+A clean **green-and-white visual identity** keeps the interface focused and easy to scan.
 
-The theme preference is persisted locally so that the user's preferred appearance survives page refreshes.
-
-The visual system is intentionally designed to keep the workload information easy to scan while giving the product its own identity.
+The theme preference is persisted using **LocalStorage**, so the selected appearance survives page refreshes.
 
 ---
 
-# 🗄️ Data Architecture
+# 🗄️ DATA ARCHITECTURE
 
 Workload Pulse uses **MockAPI** for asynchronous CRUD operations.
 
-### Default endpoint
+### 🌐 Default Endpoint
 
 ```text
 https://6aa2d7d9ccb3db9689a7133a.mockapi.io/api/v1/tasks
 ```
 
-### Task schema
+### 📦 Task Schema
 
 ```text
 id        → MockAPI generated ID
@@ -332,22 +351,29 @@ hours     → Estimated effort
 status    → Not Started | In Progress | Completed
 ```
 
-The application combines:
+### 🔄 Application Flow
 
 ```text
-React UI
-    │
-    ▼
-API Layer
-    │
-    ▼
-MockAPI
-    │
-    ▼
-Persistent Task Data
+┌──────────────┐
+│  React UI    │
+└──────┬───────┘
+       ↓
+┌──────────────┐
+│  API Layer   │
+└──────┬───────┘
+       ↓
+┌──────────────┐
+│   MockAPI    │
+└──────┬───────┘
+       ↓
+┌──────────────┐
+│  Task Data   │
+└──────────────┘
 ```
 
-LocalStorage is also used for:
+### 💾 LocalStorage
+
+Used for:
 
 * Refresh resilience
 * Theme persistence
@@ -355,194 +381,32 @@ LocalStorage is also used for:
 
 ---
 
-# 🛠️ Tech Stack
+# 🛠️ TECH STACK
 
-| Technology       | Purpose                           |
-| ---------------- | --------------------------------- |
-| ⚛️ React         | Frontend UI                       |
-| ⚡ Vite           | Development & build tooling       |
-| 🌐 MockAPI       | Asynchronous CRUD backend         |
-| 💾 LocalStorage  | Local persistence & preferences   |
-| 🎨 CSS           | Responsive interface & theming    |
-| 🧩 Lucide React  | UI icons                          |
-| 🤖 Google Gemini | Optional AI workload re-balancing |
+| Technology           | Role                                  |
+| -------------------- | ------------------------------------- |
+| ⚛️ **React**         | Frontend UI                           |
+| ⚡ **Vite**           | Development & build tooling           |
+| 🎨 **CSS**           | Interface styling & responsive design |
+| 🌐 **MockAPI**       | Asynchronous CRUD backend             |
+| 💾 **LocalStorage**  | Local persistence & preferences       |
+| 🧩 **Lucide React**  | Interface icons                       |
+| 🤖 **Google Gemini** | Optional AI workload re-balancing     |
 
 ---
 
-# 🔐 Optional Gemini Configuration
+# 🔐 OPTIONAL GEMINI CONFIGURATION
 
 Gemini functionality is optional.
 
-Create a local environment file:
+Create:
 
-```bash
+```text
 .env.local
 ```
 
-Add:
+Then add:
 
 ```env
 VITE_GEMINI_API_KEY=your_api_key_here
 ```
-
-Without the API key, the application continues to function using its local fallback.
-
----
-
-# 💻 Run Locally
-
-Clone the repository:
-
-```bash
-git clone https://github.com/chethanvamsiseemala-coder/workload-pulse.git
-```
-
-Navigate into the project:
-
-```bash
-cd workload-pulse
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-Open the Vite URL displayed in the terminal.
-
----
-
-# 🚀 Production Build
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-The generated production files are placed in:
-
-```text
-dist/
-```
-
----
-
-# ☁️ Deployment
-
-Workload Pulse can be deployed as a modern frontend application using platforms such as:
-
-* Vercel
-* Netlify
-
-### Build command
-
-```bash
-npm run build
-```
-
-### Output directory
-
-```text
-dist
-```
-
----
-
-# 🧩 Feature Overview
-
-| Feature                  | Type    | Purpose                            |
-| ------------------------ | ------- | ---------------------------------- |
-| Validated Task Form      | Core    | Quickly create reliable tasks      |
-| Rapid-submit Protection  | Core    | Prevent duplicate submissions      |
-| Weekly Workload Gauge    | Core    | Measure planned weekly effort      |
-| Dynamic Workload Alert   | Core    | Detect capacity overload           |
-| 48-Hour Urgent Spotlight | Core    | Surface approaching deadlines      |
-| Live Task Ledger         | Core    | Manage all workload items          |
-| CRUD Operations          | Core    | Create, update & delete tasks      |
-| MockAPI Integration      | Core    | Asynchronous backend persistence   |
-| Gemini Re-balancing      | Stretch | AI-assisted workload planning      |
-| Demo Data Loader         | Stretch | Instantly populate realistic tasks |
-| Dynamic Search           | Stretch | Quickly find tasks                 |
-| Category Filtering       | Stretch | Focus on specific workload areas   |
-| Theme Switcher           | Stretch | Personalize the interface          |
-
----
-
-# 💡 What Makes Workload Pulse Different?
-
-Most productivity applications answer:
-
-> **"What do I need to do?"**
-
-Workload Pulse asks a more important question:
-
-> **"Can I realistically handle everything I need to do?"**
-
-That distinction is the heart of the project.
-
-By combining **deadlines + estimated effort + weekly capacity + urgency**, Workload Pulse gives students a workload perspective rather than just another checklist.
-
----
-
-# 🎓 Designed for the Final-Year Student Reality
-
-A final-year student may have:
-
-```text
-📚 Assignment          6 hrs
-🧪 Major Project      12 hrs
-💼 Placement Prep      8 hrs
-💻 DSA Practice        6 hrs
-🎯 Interview           4 hrs
-📜 Certification       7 hrs
-────────────────────────────
-Total                 43 hrs
-```
-
-If the student's realistic weekly capacity is:
-
-```text
-40 hours
-```
-
-then the problem is no longer hidden.
-
-**Workload Pulse makes the overload visible.**
-
-And when a deadline is approaching within 48 hours, it makes that urgency impossible to miss.
-
----
-
-# 🏆 Project Vision
-
-Workload Pulse is built around a simple idea:
-
-> ### **Don't wait for burnout to tell you that you're overloaded.**
->
-> ### **See the pressure. Understand the workload. Act early.**
-
-The project aims to evolve from a simple workload tracker into an **intelligent student workload management system** capable of helping students understand not only *what* they need to do, but **when their workload is becoming unrealistic and how they can rebalance it.**
-
----
-
-# 🤖 AI-Tool Disclosure
-
-This project was developed with assistance from **ChatGPT and AI-assisted coding workflows**.
-
-All team members should read, understand, and be able to explain the files and functionality they are responsible for before presenting or evaluating the project.
-
----
-
-## ❤️ Built for Students Who Have Too Much to Do
-
-**Workload Pulse**
-
-> **Plan smarter. Spot pressure earlier. Stay in control.**
