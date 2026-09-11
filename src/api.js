@@ -4,10 +4,6 @@ const BASE_URL =
 
 const DEVICE_ID_KEY = 'workload_pulse_device_id';
 
-/**
- * Get the unique ID for this browser/device.
- * The same device keeps the same ID using localStorage.
- */
 export function getDeviceId() {
   let deviceId = localStorage.getItem(DEVICE_ID_KEY);
 
@@ -38,20 +34,13 @@ async function request(path = '', options = {}) {
 }
 
 export const taskApi = {
-  /**
-   * Get only the tasks belonging to this device.
-   */
   list: async () => {
     const tasks = await request();
-
     const deviceId = getDeviceId();
 
     return tasks.filter((task) => task.deviceId === deviceId);
   },
 
-  /**
-   * Create a task belonging to this device.
-   */
   create: (task) =>
     request('', {
       method: 'POST',
@@ -61,12 +50,6 @@ export const taskApi = {
       }),
     }),
 
-  /**
-   * Update a task.
-   *
-   * The deviceId is preserved so the task remains
-   * associated with the same device.
-   */
   update: async (id, task) => {
     const existingTask = await request(`/${id}`);
 
@@ -80,9 +63,6 @@ export const taskApi = {
     });
   },
 
-  /**
-   * Delete a task.
-   */
   remove: (id) =>
     request(`/${id}`, {
       method: 'DELETE',
