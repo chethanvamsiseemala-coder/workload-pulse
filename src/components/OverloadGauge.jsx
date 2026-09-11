@@ -31,7 +31,7 @@ export default function OverloadGauge({ tasks }) {
       <div className="flex justify-between text-xs text-base-content/50 mt-1">
         <span>0 hrs</span>
         <span>{percentage}% utilized</span>
-        <span>40 hrs max</span>
+        <span>{maxCapacity} hrs max</span>
       </div>
     </div>
   );
