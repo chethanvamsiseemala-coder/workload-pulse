@@ -408,31 +408,60 @@ function App() {
      FILTERED TASKS
      ===================================================== */
 
- const filteredTasks =
+const filteredTasks =
   useMemo(
-    () =>
-      activeTasks.filter((task) => {
+    () => {
+      const categoryPriority = {
+        Academic: 1,
+        Career: 2,
+        Personal: 3
+      };
 
-        const matchesSearch =
-          task.title
-            .toLowerCase()
-            .includes(
-              search
-                .trim()
-                .toLowerCase()
-            );
+      return activeTasks
+        .filter((task) => {
 
-        const matchesCategory =
-          activeCategory ===
-            'All' ||
-          task.category ===
-            activeCategory;
+          const matchesSearch =
+            task.title
+              .toLowerCase()
+              .includes(
+                search
+                  .trim()
+                  .toLowerCase()
+              );
 
-        return (
-          matchesSearch &&
-          matchesCategory
-        );
-      }),
+          const matchesCategory =
+            activeCategory ===
+              'All' ||
+            task.category ===
+              activeCategory;
+
+          return (
+            matchesSearch &&
+            matchesCategory
+          );
+        })
+        .sort((a, b) => {
+
+          // 1. Sort by due date
+          const dateA = a.duedate
+            ? new Date(`${a.duedate}T00:00:00`).getTime()
+            : Infinity;
+
+          const dateB = b.duedate
+            ? new Date(`${b.duedate}T00:00:00`).getTime()
+            : Infinity;
+
+          if (dateA !== dateB) {
+            return dateA - dateB;
+          }
+
+          // 2. Same date → category priority
+          return (
+            (categoryPriority[a.category] ?? 99) -
+            (categoryPriority[b.category] ?? 99)
+          );
+        });
+    },
     [
       activeTasks,
       search,
