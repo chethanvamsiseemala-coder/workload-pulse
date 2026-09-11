@@ -42,6 +42,7 @@ export default function App() {
   };
 
   return (
+    
     <div className="min-h-screen bg-base-200 p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         
@@ -51,6 +52,7 @@ export default function App() {
             <h1 className="text-3xl font-black">WorkloadPulse</h1>
             <p className="text-sm text-base-content/70">Real-time Task & Engineering Capacity Tracker</p>
           </div>
+          <h1 className="text-3xl font-black bg-red-500 text-white">WorkloadPulse</h1>
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold uppercase">Theme:</span>
             <select className="select select-bordered select-sm" value={theme} onChange={handleThemeChange}>
