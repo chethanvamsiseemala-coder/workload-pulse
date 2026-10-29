@@ -1,421 +1,316 @@
-# ⚡ WORKLOAD PULSE
+# ⚡ Workload Pulse
 
-### **See the pressure before it becomes a problem.**
+<div align="center">
 
-> 🎓 **A workload-awareness platform for final-year engineering students**
->
-> **Track → Measure → Detect → Prioritize → Act**
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=28&pause=1000&color=6366F1&center=true&vCenter=true&width=600&lines=Plan+Smarter.+Work+Better.;Your+Tasks%2C+Your+Progress.;Stay+Focused.+Stay+Productive." alt="Workload Pulse tagline" />
 
----
+  <p><strong>A modern full-stack task management application to organize work, track tasks, and stay productive.</strong></p>
 
-<p align="center">
+  <p>
+    <a href="https://workload-pulse-tau.vercel.app/">
+      <img src="https://img.shields.io/badge/🚀_Live_Demo-6366F1?style=for-the-badge" alt="Live Demo" />
+    </a>
+    <a href="https://github.com/chethanvamsiseemala-coder/workload-pulse">
+      <img src="https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github" alt="GitHub Repository" />
+    </a>
+    <a href="https://workload-pulse-api.onrender.com/api/health">
+      <img src="https://img.shields.io/badge/API-Online-16A34A?style=for-the-badge&logo=render" alt="Backend API" />
+    </a>
+  </p>
 
-**📚 Academic**  •  **💼 Career**  •  **👤 Personal**
+  <p>
+    <img src="https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB" alt="React" />
+    <img src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite" />
+    <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node.js" />
+    <img src="https://img.shields.io/badge/Express.js-000000?style=flat-square&logo=express&logoColor=white" alt="Express.js" />
+    <img src="https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white" alt="MongoDB" />
+    <img src="https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white" alt="Vercel" />
+    <img src="https://img.shields.io/badge/Render-46E3B7?style=flat-square&logo=render&logoColor=black" alt="Render" />
+  </p>
 
-</p>
-
-APP LINK:- https://workload-pulse-one.vercel.app/
-
----
-
-## 🎯 The Problem
-
-
-
-Final-year engineering students rarely struggle because they have *nothing to do*.
-
-They struggle because **everything becomes due at the same time.**
-
-Assignments overlap with project milestones.
-Project work overlaps with placement preparation.
-Interviews collide with exams.
-Certifications compete with everything else.
-
-The real challenge isn't simply:
-
-> ❌ **"What do I need to do?"**
-
-It's:
-
-> ✅ **"Do I actually have enough time this week to handle everything I've planned?"**
-
-Traditional to-do lists tell students **what** they need to do.
-
-### ⚡ Workload Pulse tells them whether their workload is becoming unmanageable.
+</div>
 
 ---
 
-## 👨‍🎓 Target User
+## 🌐 Live Application
 
-### Final-Year Engineering Students
+> **Workload Pulse is deployed and operational.** Create, manage, and organize your tasks through the live application.
 
-Designed for students managing multiple responsibilities simultaneously:
+| Component | Link |
+|:---|:---|
+| 🌍 Live Frontend | [workload-pulse-tau.vercel.app](https://workload-pulse-tau.vercel.app/) |
+| ⚙️ Backend API | [workload-pulse-api.onrender.com](https://workload-pulse-api.onrender.com) |
+| ❤️ API Health Check | [Check API Status](https://workload-pulse-api.onrender.com/api/health) |
+| 💻 Source Code | [GitHub Repository](https://github.com/chethanvamsiseemala-coder/workload-pulse) |
 
-| 📚 Academic | 💼 Career           | 👤 Personal      |
-| ----------- | ------------------- | ---------------- |
-| Assignments | Placement Prep      | Personal Tasks   |
-| Projects    | Interviews          | Commitments      |
-| Labs        | Coding Practice     | Other Activities |
-| Exams       | Certifications      | —                |
-| Hackathons  | Career Applications | —                |
+## ✨ Key Features
 
-> **Limited time + multiple deadlines = workload pressure.**
->
-> **Workload Pulse makes that pressure visible.**
+<table>
+  <tr>
+    <td width="50%">
+      <h3>📋 Task Management</h3>
+      Create, view, update, and delete tasks through the application.
+    </td>
+    <td width="50%">
+      <h3>💾 Persistent Storage</h3>
+      Store task data in MongoDB Atlas so changes remain available after refreshing.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <h3>🔗 RESTful API</h3>
+      Communicate between the frontend and backend using HTTP endpoints.
+    </td>
+    <td width="50%">
+      <h3>🛡️ Error Handling</h3>
+      Handle API errors and backend connectivity issues.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <h3>☁️ Cloud Deployment</h3>
+      Host the frontend on Vercel and the backend on Render.
+    </td>
+    <td width="50%">
+      <h3>⚡ Modern Development</h3>
+      Use Vite, Node.js, Express, and Mongoose for development and API integration.
+    </td>
+  </tr>
+</table>
 
----
+## 🧰 Technology Stack
 
-# 🚀 CORE FEATURES
+<div align="center">
 
-## 01 · 📝 Smart Task Creation
+| Layer | Technologies |
+|:---|:---|
+| **Frontend** | React, Vite, JavaScript, CSS |
+| **Backend** | Node.js, Express.js |
+| **Database** | MongoDB Atlas, Mongoose |
+| **Communication** | REST API, HTTP, CORS |
+| **Deployment** | Vercel, Render |
+| **Version Control** | Git, GitHub |
 
-Create tasks through a validated form with:
+</div>
 
-* **Task Title**
-* **Category**
+## 🏛️ System Architecture
 
-  * 📚 Academic
-  * 💼 Career
-  * 👤 Personal
-* **Due Date**
-* **Estimated Effort**
-* **Task Status**
+<div align="center">
 
-  * `Not Started`
-  * `In Progress`
-  * `Completed`
-
-### ⚡ Rapid-Submit Protection
-
-Rapid clicks won't accidentally create duplicate tasks.
-
-The form validates input before submission and protects the task ledger from accidental duplicate entries.
-
----
-
-## 02 · 📊 Real-Time Weekly Workload Gauge
-
-Workload Pulse doesn't just count tasks.
-
-### It measures the **estimated hours of work**.
-
-```text
-        WEEKLY CAPACITY
-              │
-              ▼
-           40 hrs
-              │
-              ▼
-        PLANNED WORK
-              │
-              ▼
-           32 hrs
-              │
-              ▼
-     REMAINING CAPACITY
-              │
-              ▼
-            8 hrs
+```mermaid
+flowchart TD
+    A["👤 User"] --> B["⚡ React + Vite Frontend"]
+    B -->|"HTTP / REST API"| C["🟢 Node.js + Express Backend"]
+    C -->|"Mongoose"| D[("🍃 MongoDB Atlas")]
+    D -->|"Database Results"| C
+    C -->|"JSON Response"| B
+    B --> A
+    style B fill:#6366f1,color:#fff,stroke:#4f46e5
+    style C fill:#16a34a,color:#fff,stroke:#15803d
+    style D fill:#0d9488,color:#fff,stroke:#0f766e
 ```
 
-Every create, update, completion, or deletion dynamically changes the workload picture.
+</div>
 
-> **A task list tells you how much you have.**
->
-> **The workload gauge tells you whether you can handle it.**
+### 🔄 How It Works
 
----
+1. The user interacts with the React frontend.
+2. The frontend sends HTTP requests to the Express API.
+3. The backend processes requests and interacts with MongoDB Atlas through Mongoose.
+4. The API returns responses to the frontend.
+5. The interface updates to reflect the latest task data.
 
-## 03 · 🚨 Dynamic Workload Alert
+## 🚀 Getting Started
 
-Workload Pulse continuously compares:
+Follow these steps to run Workload Pulse locally.
 
-### **Planned Effort 🆚 Available Capacity**
+### Prerequisites
 
-| Status            | Meaning                                 |
-| ----------------- | --------------------------------------- |
-| 🟢 **HEALTHY**    | Workload is comfortably within capacity |
-| 🟡 **WARNING**    | Available capacity is becoming limited  |
-| 🔴 **OVERLOADED** | Planned effort exceeds capacity         |
+Ensure you have the following installed:
 
-The moment workload crosses the capacity threshold, the interface makes the situation immediately visible.
+- [Node.js](https://nodejs.org/)
+- npm
+- [Git](https://git-scm.com/)
+- A MongoDB Atlas account or a local MongoDB instance
 
-### The question becomes:
+### 1. Clone the Repository
 
-> **"Am I taking on more work than I can realistically complete?"**
-
----
-
-## 04 · ⏰ 48-Hour Urgent Task Spotlight
-
-### **Deadlines don't wait. Neither should your priorities.**
-
-Workload Pulse automatically highlights tasks approaching their deadline within **48 hours**.
-
-The urgent spotlight provides:
-
-* 🚨 Deadline visibility
-* ⏳ Remaining-time awareness
-* 📌 Task details
-* ⚡ Quick status updates
-
-Users can quickly move a task through:
-
-```text
-NOT STARTED
-      ↓
-IN PROGRESS
-      ↓
-COMPLETED
+```bash
+git clone https://github.com/chethanvamsiseemala-coder/workload-pulse.git
+cd workload-pulse
 ```
 
-### Why 48 hours?
+### 2. Install Dependencies
 
-Because the final two days before a deadline are often where workload collisions become critical.
+Install the frontend dependencies from the directory containing the frontend `package.json`:
 
-> **Workload Pulse surfaces the pressure before the deadline becomes a crisis.**
-
----
-
-## 05 · 📋 Live Task Ledger
-
-A centralized ledger keeps every workload item visible and manageable.
-
-| Information  | Purpose                      |
-| ------------ | ---------------------------- |
-| 📝 Task      | What needs to be done        |
-| 🏷️ Category | Academic / Career / Personal |
-| 📅 Due Date  | When it is due               |
-| ⏱️ Effort    | Estimated hours              |
-| 📌 Status    | Current progress             |
-
-### Full CRUD Support
-
-```text
-➕ CREATE
-   ↓
-👀 READ
-   ↓
-✏️ UPDATE
-   ↓
-🗑️ DELETE
+```bash
+npm install
 ```
 
-All changes are synchronized through the application's asynchronous backend.
+Install backend dependencies:
 
----
-
-# 🧠 HOW WORKLOAD PULSE WORKS
-
-```text
-             ┌───────────────┐
-             │   ADD TASK    │
-             └───────┬───────┘
-                     ↓
-             ┌───────────────┐
-             │ ESTIMATE HOURS│
-             └───────┬───────┘
-                     ↓
-             ┌───────────────┐
-             │ SET DEADLINE  │
-             └───────┬───────┘
-                     ↓
-          ┌──────────────────────┐
-          │   WORKLOAD PULSE     │
-          │   CALCULATES LOAD    │
-          └──────────┬───────────┘
-                     ↓
-          ┌──────────────────────┐
-          │ WITHIN CAPACITY?     │
-          └──────────┬───────────┘
-                     ↓
-             ┌───────┴───────┐
-             ↓               ↓
-          🟢 YES             🔴 NO
-             ↓               ↓
-        STAY ON TRACK    PRIORITIZE
-                             ↓
-                       ACT EARLY
+```bash
+cd backend
+npm install
 ```
 
-### The philosophy is simple:
+> Run each command in the directory containing the corresponding `package.json`.
 
-> **Don't wait until you're overwhelmed to realize you're overloaded.**
+### 3. Configure Environment Variables
 
----
-
-# ✨ STRETCH FEATURES
-
-The core features make workload visible.
-
-The stretch features help students **do something about it**.
-
----
-
-## 🤖 Gemini AI Workload Re-Balancing
-
-When the workload becomes difficult to manage, Workload Pulse can use **Google Gemini** to generate workload re-balancing suggestions.
-
-Instead of simply saying:
-
-> 🔴 **"You are overloaded."**
-
-The AI helps answer:
-
-> 💡 **"What should I do about it?"**
-
-Suggestions can consider:
-
-* 📅 Upcoming deadlines
-* ⏱️ Estimated effort
-* 📌 Task status
-* 📊 Workload concentration
-* 🏷️ Task categories
-
-### 🧠 From Monitoring → Decision Support
-
-This transforms Workload Pulse from a workload tracker into an:
-
-> **AI-assisted workload planning companion.**
-
-### 🛡️ Resilient Fallback
-
-Gemini is optional.
-
-If an API key isn't available, a **local fallback mechanism** keeps the demo functional.
-
----
-
-## ⚡ One-Click Demo Data Loader
-
-### **Ready-to-demo in one click.**
-
-The demo loader populates the application with realistic workload scenarios.
-
-It can demonstrate:
-
-* 🟢 Normal workload
-* ⏰ Approaching deadlines
-* 🔴 Overloaded weeks
-* 📚 Multiple categories
-* 📌 Different task statuses
-
-Perfect for quickly demonstrating the application's complete workflow.
-
----
-
-## 🔎 Dynamic Search & Category Filtering
-
-As the task list grows, users can quickly find what matters.
-
-### 🔍 Search
-
-Search through tasks quickly.
-
-### 🏷️ Category Filtering
-
-Filter by:
-
-`📚 Academic` · `💼 Career` · `👤 Personal`
-
-Examples:
-
-> **"Show me everything related to placements."**
-
-> **"What academic work do I still have?"**
-
----
-
-## 🎨 Green / White Theme Switcher
-
-A clean **green-and-white visual identity** keeps the interface focused and easy to scan.
-
-The theme preference is persisted using **LocalStorage**, so the selected appearance survives page refreshes.
-
----
-
-# 🗄️ DATA ARCHITECTURE
-
-Workload Pulse uses an **Express + Mongoose API backed by MongoDB** for asynchronous CRUD operations. Follow [README-MONGODB-SETUP.md](README-MONGODB-SETUP.md) for the complete local setup and deployment guide.
-
-### 🌐 Default Endpoint
-
-```text
-http://localhost:5000/api/tasks (local development; set `VITE_API_BASE_URL` for deployment)
-```
-
-### 📦 Task Schema
-
-```text
-id        → MongoDB ObjectId (`_id`, normalized to `id` in the frontend)
-title     → Task title
-category  → Academic | Career | Personal
-duedate   → YYYY-MM-DD
-hours     → Estimated effort
-status    → Not Started | In Progress | Completed
-```
-
-### 🔄 Application Flow
-
-```text
-┌──────────────┐
-│  React UI    │
-└──────┬───────┘
-       ↓
-┌──────────────┐
-│  API Layer   │
-└──────┬───────┘
-       ↓
-┌──────────────┐
-│  Express API │
-└──────┬───────┘
-       ↓
-┌──────────────┐
-│   MongoDB    │
-└──────┬───────┘
-       ↓
-┌──────────────┐
-│  Task Data   │
-└──────────────┘
-```
-
-### 💾 LocalStorage
-
-Used for:
-
-* Refresh resilience
-* Theme persistence
-* Client-side state continuity
-
----
-
-# 🛠️ TECH STACK
-
-| Technology           | Role                                  |
-| -------------------- | ------------------------------------- |
-| ⚛️ **React**         | Frontend UI                           |
-| ⚡ **Vite**           | Development & build tooling           |
-| 🎨 **CSS**           | Interface styling & responsive design |
-| 🟢 **Node.js + Express** | REST API and request handling       |
-| 🍃 **MongoDB + Mongoose** | Persistent task storage and validation |
-| 💾 **LocalStorage**  | Local persistence & preferences       |
-| 🧩 **Lucide React**  | Interface icons                       |
-| 🤖 **Google Gemini** | Optional AI workload re-balancing     |
-
----
-
-# 🔐 OPTIONAL GEMINI CONFIGURATION
-
-Gemini functionality is optional.
-
-Create:
-
-```text
-.env.local
-```
-
-Then add:
+Create a `.env` file in the backend directory:
 
 ```env
-VITE_GEMINI_API_KEY=your_api_key_here
+PORT=5000
+MONGODB_URI=your_mongodb_connection_string
+CORS_ORIGIN=http://localhost:5173
 ```
+
+Configure the frontend `.env` file in the frontend project root:
+
+```env
+VITE_API_BASE_URL=http://localhost:5000/api/tasks
+```
+
+**Important:** Replace the MongoDB connection string placeholder with your actual database connection string. If your backend uses a different port or environment variable name, use the values defined in your code.
+
+Never commit `.env` files or database credentials to GitHub.
+
+### 4. Start the Backend
+
+From the backend directory, run the development script defined in its `package.json`, for example:
+
+```bash
+npm run dev
+```
+
+### 5. Start the Frontend
+
+Open another terminal, navigate to the frontend project root, and run:
+
+```bash
+npm run dev
+```
+
+Open the local URL printed by Vite, usually `http://localhost:5173`.
+
+## 🔌 API Reference
+
+**Production base URL**
+
+```text
+https://workload-pulse-api.onrender.com
+```
+
+| Method | Endpoint | Description |
+|:---:|:---|:---|
+| `GET` | `/api/health` | Check backend health |
+| `GET` | `/api/tasks` | Retrieve tasks |
+| `POST` | `/api/tasks` | Create a task |
+| `PUT` / `PATCH` | `/api/tasks/:id` | Update a task |
+| `DELETE` | `/api/tasks/:id` | Delete a task |
+
+<details>
+  <summary><strong>❤️ Health Check Example</strong></summary>
+
+  **Request**
+
+  ```http
+  GET /api/health
+  ```
+
+  **Example response**
+
+  ```json
+  {
+    "status": "ok",
+    "service": "Workload Pulse API"
+  }
+  ```
+
+</details>
+
+<details>
+  <summary><strong>📋 Tasks Endpoint</strong></summary>
+
+  Retrieve the current task collection:
+
+  ```http
+  GET /api/tasks
+  ```
+
+  The response structure depends on the implementation of the task routes.
+
+</details>
+
+> **Note:** Verify the exact update method, route parameters, and request body against `backend/src/routes/taskRoutes.js` before treating this table as the definitive API contract.
+
+## ☁️ Deployment
+
+Workload Pulse uses a separate deployment for each application layer.
+
+| Service | Platform | Configuration |
+|:---|:---|:---|
+| Frontend | Vercel | `VITE_API_BASE_URL` |
+| Backend | Render | `PORT`, `MONGODB_URI`, `CORS_ORIGIN` |
+| Database | MongoDB Atlas | Database connection string |
+
+### Frontend Environment Variable
+
+Set the following in your Vercel project settings:
+
+```env
+VITE_API_BASE_URL=https://workload-pulse-api.onrender.com/api/tasks
+```
+
+### Backend Configuration
+
+Configure the MongoDB connection string and allowed frontend origins in Render's environment settings.
+
+Example `CORS_ORIGIN`:
+
+```text
+http://localhost:5173,https://workload-pulse-one.vercel.app,https://workload-pulse-tau.vercel.app
+```
+
+Only include origins that your application should allow.
+
+## 🔐 Security Best Practices
+
+- Keep database credentials and secrets out of source control.
+- Never put private credentials in frontend environment variables prefixed with `VITE_`.
+- Configure CORS to allow only trusted origins.
+- Validate incoming data on the backend.
+- Handle errors without exposing sensitive server information.
+
+## 🗺️ Future Enhancements
+
+- [ ] User authentication and authorization
+- [ ] Task priorities and deadlines
+- [ ] Search, filtering, and sorting
+- [ ] Productivity analytics and dashboards
+- [ ] Notifications and reminders
+- [ ] Automated testing and CI/CD improvements
+
+## 👨‍💻 Author
+
+<div align="center">
+
+  <h3>Chethan Vamsi</h3>
+  <p>B.Tech — Computer Science and Engineering (AI &amp; ML)</p>
+  <a href="https://github.com/chethanvamsiseemala-coder">
+    <img src="https://img.shields.io/badge/GitHub-Chethan_Vamsi-181717?style=for-the-badge&logo=github" alt="GitHub Profile" />
+  </a>
+
+</div>
+
+---
+
+<div align="center">
+
+  <h3>⚡ Workload Pulse</h3>
+  <p><em>Plan smarter. Stay organized. Get things done.</em></p>
+  <p>If you find this project useful, consider giving the repository a ⭐</p>
+
+</div>
